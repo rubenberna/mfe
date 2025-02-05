@@ -6,8 +6,10 @@ const dependencies = require('../package.json').dependencies;
 const prodConfig = {
   mode: 'production', // makes optimizations for production
   output: {
-    filename: '[name].[contenthash].js'
-  }, // ensures that whenever we build some file for production, all the different
+    // ensures that whenever we build some file for production, all the different
+    filename: '[name].[contenthash].js',
+    publicPath: '/marketing/latest/', // this is the path where the files will be hosted, so that our remoteEntry.js file can be accessed
+  },
   plugins: [
     new ModuleFederationPlugin({
       name: 'marketing',
