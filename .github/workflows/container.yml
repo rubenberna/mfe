@@ -18,16 +18,51 @@ jobs:
 
     steps:
       # Checkout code
-      - uses: actions/checkout@v2
+      - name: Checkout Code
+        uses: actions/checkout@v2
 
       # Install dependencies and build
-      - run: npm install
-      - run: npm run build
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Build the Project
+        run: npm run build
+
+      # Debug: Check if secrets are set
+      - name: Debug Secrets Presence
+        run: |
+          if [ -z "${{ secrets.AWS_S3_BUCKET_NAME }}" ]; then
+            echo "AWS_S3_BUCKET_NAME is empty or not set"
+          else
+            echo "AWS_S3_BUCKET_NAME is set"
+          fi
+          if [ -z "${{ secrets.AWS_ACCESS_KEY_ID }}" ]; then
+            echo "AWS_ACCESS_KEY_ID is empty or not set"
+          else
+            echo "AWS_ACCESS_KEY_ID is set"
+          fi
+          if [ -z "${{ secrets.AWS_SECRET_ACCESS_KEY }}" ]; then
+            echo "AWS_SECRET_ACCESS_KEY is empty or not set"
+          else
+            echo "AWS_SECRET_ACCESS_KEY is set"
+          fi
+          if [ -z "${{ secrets.AWS_DEFAULT_REGION }}" ]; then
+            echo "AWS_DEFAULT_REGION is empty or not set"
+          else
+            echo "AWS_DEFAULT_REGION is set"
+          fi
+
+      # Debug: Log environment variables containing AWS
+      - name: Debug Environment Variables
+        run: |
+          echo "Listing all AWS-related environment variables..."
+          env | grep AWS_
 
       # Sync to S3
-      - uses: shinyinc/action-aws-cli@v1.2
-      - run: aws s3 sync dist s3://${{ secrets.AWS_S3_BUCKET_NAME }}/container/latest
+      - name: Deploy to S3
+        uses: shinyinc/action-aws-cli@v1.2
+        run: aws s3 sync dist s3://${{ secrets.AWS_S3_BUCKET_NAME }}/container/latest
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_DEFAULT_REGION: "eu-north-1"
+          AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
