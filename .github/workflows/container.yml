@@ -52,12 +52,6 @@ jobs:
             echo "AWS_DEFAULT_REGION is set"
           fi
 
-      # Debug: Log environment variables containing AWS
-      - name: Debug Environment Variables
-        run: |
-          echo "Listing all AWS-related environment variables..."
-          env | grep AWS_
-
       # Install AWS CLI (if needed)
       - name: Install AWS CLI
         run: |
