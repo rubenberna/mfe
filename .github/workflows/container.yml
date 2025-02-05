@@ -52,12 +52,6 @@ jobs:
             echo "AWS_DEFAULT_REGION is set"
           fi
 
-      # Install AWS CLI (if needed)
-      - name: Install AWS CLI
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y awscli
-
       # Sync to S3
       - name: Deploy to S3
         run: aws s3 sync dist s3://${{ secrets.AWS_S3_BUCKET_NAME }}/container/latest
