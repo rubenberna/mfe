@@ -119,7 +119,7 @@ export default function Album() {
                 <Card className={classes.card}>
                   <CardMedia
                     className={classes.cardMedia}
-                    image="https://unsplash.com/photos/a-person-swimming-in-the-ocean-with-a-camera-NhWxAIs61MM"
+                    image="https://dataportalprod01.blob.core.windows.net/assets/unsplash.jpg"
                     title="Image title"
                   />
                   <CardContent className={classes.cardContent}>
